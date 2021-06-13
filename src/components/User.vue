@@ -5,7 +5,10 @@
 			:loaded="loaded"
 			@dropdown-click="downloadAlbums(user.id)"
 		>
-			<li v-for="album in albums" :key="album.name">
+			<li
+				v-for="album in albums"
+				:key="album.name"
+			>
 				<Album :album="album" />
 			</li>
 		</custom-dropdown>
@@ -13,8 +16,8 @@
 </template>
 
 <script>
-import { fetchData } from "@/api"
-import Album from "@/components/Album.vue"
+import { fetchData } from "@/api";
+import Album from "@/components/Album.vue";
 export default {
 	components: { Album },
 	props: {
@@ -27,21 +30,21 @@ export default {
 		return {
 			albums: [],
 			loaded: false,
-		}
+		};
 	},
 	methods: {
 		async downloadAlbums(id) {
 			try {
-				if (!this.albums.length) {
-					this.albums = await fetchData(`/albums?userId=${id}`)
-					this.loaded = true
+				if (!this.loaded) {
+					this.albums = await fetchData(`/albums?userId=${id}`);
+					this.loaded = true;
 				}
 			} catch (error) {
-				console.log(error)
+				console.log(error);
 			}
 		},
 	},
-}
+};
 </script>
 
 <style lang="scss">

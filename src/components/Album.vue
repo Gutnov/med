@@ -2,10 +2,14 @@
 	<div>
 		<custom-dropdown
 			:title="album.title"
-			@dropdown-click="downloadImages(album.id)"
 			:loaded="loaded"
+			@dropdown-click="downloadImages(album.id)"
 		>
-			<li v-for="image in images" :key="image.title" style="line-height: 0">
+			<li
+				v-for="image in images"
+				:key="image.title"
+				style="line-height: 0"
+			>
 				<ImageItem
 					:favorite="favorite"
 					:image="image"
@@ -18,8 +22,8 @@
 </template>
 
 <script>
-import { fetchData } from "@/api"
-import ImageItem from "@/components/ImageItem.vue"
+import { fetchData } from "@/api";
+import ImageItem from "@/components/ImageItem.vue";
 
 export default {
 	components: {
@@ -35,40 +39,38 @@ export default {
 		return {
 			images: [],
 			loaded: false,
-			favorite: [],
-			favoriteIdObj: {},
-		}
+			favorite: []
+		};
+	},
+	created() {
+		this.favorite = JSON.parse(localStorage.getItem("favorite")) || [];
 	},
 	methods: {
 		async downloadImages(id) {
 			try {
 				if (!this.images.length) {
-					this.images = await fetchData(`/photos?albumId=${id}`)
-					this.loaded = true
+					this.images = await fetchData(`/photos?albumId=${id}`);
+					this.loaded = true;
 				}
-			} catch (error) {}
+			} catch (error) {
+				console.log(error);
+			}
 		},
 		addToFavorite(img) {
-			this.favorite.push(img)
-			localStorage.setItem("favorite", JSON.stringify(this.favorite))
+			this.favorite.push(img);
+			localStorage.setItem("favorite", JSON.stringify(this.favorite));
 		},
 		removeFromFavorite(id) {
-			const idx = this.favorite.findIndex(f => f.id === id)
+			const idx = this.favorite.findIndex(f => f.id === id);
 			if (idx !== -1) {
-				this.favorite.splice(idx, 1)
-				localStorage.setItem("favorite", JSON.stringify(this.favorite))
+				this.favorite.splice(idx, 1);
+				localStorage.setItem("favorite", JSON.stringify(this.favorite));
 			}
 		},
 		inFavorite(id) {
-			return typeof this.favorite.find(f => f.id === id) !== "undefined"
-		},
-		logInfo() {
-			console.log(1)
-		},
+			return typeof this.favorite.find(f => f.id === id) !== "undefined";
+		}
 	},
-	created() {
-		this.favorite = JSON.parse(localStorage.getItem("favorite")) || []
-	},
-}
+};
 </script>
 <style lang="scss"></style>

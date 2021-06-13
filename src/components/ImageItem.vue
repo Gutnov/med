@@ -18,13 +18,13 @@
 			:src="image.thumbnailUrl"
 			:alt="image.title"
 			:title="image.title"
-			@click="$bus.$emit('show-image', image)"
-		/>
+			@click="showImage(image)"
+		>
 	</div>
 </template>
 
 <script>
-import Star from "@/assets/svg/star.svg"
+import Star from "@/assets/svg/star.svg";
 
 export default {
 	components: {
@@ -44,14 +44,15 @@ export default {
 		inFavorite() {
 			return (
 				typeof this.favorite.find(f => f.id === this.image.id) !== "undefined"
-			)
+			);
 		},
 	},
 	methods: {
-		addClickHandler() {},
-		removeClickHandler() {},
-	},
-}
+		showImage(image) {
+			setTimeout(() => this.$bus.$emit("show-image", image));
+		}
+	}
+};
 </script>
 
 <style lang="scss">

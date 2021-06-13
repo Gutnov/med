@@ -1,7 +1,11 @@
 <template>
 	<div>
 		<div v-if="users && users.length">
-			<User v-for="user in users" :key="user.name" :user="user" />
+			<User
+				v-for="user in users"
+				:key="user.name"
+				:user="user"
+			/>
 		</div>
 		<p v-else>
 			Not found
@@ -9,7 +13,7 @@
 	</div>
 </template>
 <script>
-import User from "@/components/User.vue"
+import User from "@/components/User.vue";
 export default {
 	components: { User },
 	props: {
@@ -18,5 +22,5 @@ export default {
 			default: () => [],
 		},
 	},
-}
+};
 </script>

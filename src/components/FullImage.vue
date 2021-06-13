@@ -1,10 +1,18 @@
 <template>
 	<div class="full-image">
-		<div class="full-image__close" @click="$emit('hide-image')">
-			<span></span>
-			<span></span>
+		<div
+			class="full-image__close"
+			@click="$emit('hide-image')"
+		>
+			<span />
+			<span />
 		</div>
-		<img :src="image.url" :alt="image.title" :title="image.title" />
+		<img
+			v-click-outside="logInfo"
+			:src="image.url"
+			:alt="image.title"
+			:title="image.title"
+		>
 	</div>
 </template>
 
@@ -16,7 +24,10 @@ export default {
 			default: () => ({}),
 		},
 	},
-}
+	methods: {
+		logInfo(){setTimeout(() => this.$emit("hide-image"));}
+	}
+};
 </script>
 
 <style lang="scss">

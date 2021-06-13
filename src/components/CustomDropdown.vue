@@ -1,6 +1,9 @@
 <template>
 	<div class="custom-dropdown">
-		<div class="custom-dropdown-title" @click="dropdownClickHandler">
+		<div
+			class="custom-dropdown-title"
+			@click="dropdownClickHandler"
+		>
 			<div
 				class="custom-dropdown__arrow-wr"
 				:class="{ active: dropdownActive }"
@@ -10,14 +13,17 @@
 			{{ title }}
 		</div>
 		<transition name="options">
-			<ul class="custom-dropdown__list" v-if="dropDownVisible">
-				<slot></slot>
+			<ul
+				v-if="dropDownVisible"
+				class="custom-dropdown__list"
+			>
+				<slot />
 			</ul>
 		</transition>
 	</div>
 </template>
 <script>
-import ArrowDown from "@/assets/svg/expand-button.svg"
+import ArrowDown from "@/assets/svg/expand-button.svg";
 
 export default {
 	components: {
@@ -36,20 +42,20 @@ export default {
 	data() {
 		return {
 			dropdownActive: false,
-		}
+		};
 	},
 	computed: {
 		dropDownVisible() {
-			return this.dropdownActive && this.loaded
+			return this.dropdownActive && this.loaded;
 		},
 	},
 	methods: {
 		dropdownClickHandler() {
-			this.$emit("dropdown-click")
-			this.dropdownActive = !this.dropdownActive
+			this.$emit("dropdown-click");
+			this.dropdownActive = !this.dropdownActive;
 		},
 	},
-}
+};
 </script>
 
 <style lang="scss">

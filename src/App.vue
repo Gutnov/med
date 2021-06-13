@@ -1,32 +1,38 @@
 <template>
-	<div class="app">
+	<div
+		class="app"
+		:class="{fixed: imageData}"
+	>
 		<div class="container">
 			<div class="app__tab-controls">
 				<button
-					class="app__tab-control"
 					v-for="tab in tabs"
 					:key="tab.name"
+					class="app__tab-control"
 					@click="currentComponent = tab.name"
 				>
 					{{ tab.label }}
 				</button>
 			</div>
-			<component :users="users" :is="currentComponent"></component>
+			<component
+				:is="currentComponent"
+				:users="users"
+			/>
 		</div>
 		<FullImage
+			v-if="imageData"
 			:image="imageData"
-			v-if="showFullImage"
-			@hide-image="showFullImage = false"
+			@hide-image="imageData = null"
 		/>
 	</div>
 </template>
 
 <script>
-import Catalog from "@/components/Catalog.vue"
-import Favorite from "@/components/Favorite.vue"
-import FullImage from "@/components/FullImage.vue"
+import Catalog from "@/components/Catalog.vue";
+import Favorite from "@/components/Favorite.vue";
+import FullImage from "@/components/FullImage.vue";
 
-import { fetchData } from "@/api"
+import { fetchData } from "@/api";
 export default {
 	components: {
 		Catalog,
@@ -37,38 +43,45 @@ export default {
 		return {
 			currentComponent: "Catalog",
 			tabs: [
-				{ name: "Catalog", label: "Каталог" },
+				{ name:  "Catalog", label: "Каталог" },
 				{ name: "Favorite", label: "Избранное" },
 			],
-			imageData: "",
-			showFullImage: false,
+			imageData: null,
 			users: [],
-		}
+		};
 	},
 	async created() {
 		try {
-			const res = await fetchData("/users")
-			this.users = res.filter(u => u.name)
+			const res = await fetchData("/users");
+			this.users = res.filter(u => u.name);
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 		}
 		this.$bus.$on("show-image", img => {
-			document.body.style.overflowY = "hidden"
-			this.imageData = img
-			this.showFullImage = true
-		})
+			this.imageData = img;
+		});
 	},
-}
+};
 </script>
 
 <style lang="scss">
 body {
 	font-family: "Roboto", sans-serif;
+	margin: 0;
+	max-width: 320px;
+	overflow-x: hidden;
+}
+button {
+	padding: 0;
 }
 .container {
 	max-width: 1440px;
 	margin: 0 auto;
 	padding: 0 20px;
+}
+.app.fixed {
+	max-height: 100vh;
+	overflow-y: hidden;
 }
 .app__tab-controls {
 	margin-bottom: 20px;
